@@ -1,0 +1,127 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.antel.com.uy/servicio/epagos/notificaciones-v6.0"
+                  xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+                  name="NotificacionSuscripcionServiceFinalService" targetNamespace="http://www.antel.com.uy/servicio/epagos/notificaciones-v6.0">
+  <wsdl:types>
+    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.antel.com.uy/servicio/epagos/notificaciones-v6.0" elementFormDefault="qualified" targetNamespace="http://www.antel.com.uy/servicio/epagos/notificaciones-v6.0" version="1.0">
+
+      <xs:element name="notificacionSuscripcionDTO" type="tns:notificacion-suscripcion"/>
+
+      <xs:element name="notificacionUsuarioSuscripcionesDTO" type="tns:notificacion-usuario-suscripciones"/>
+
+      <xs:element name="notificarSuscripcion" type="tns:notificarSuscripcion"/>
+
+      <xs:element name="notificarUsuarioSuscripciones" type="tns:notificarUsuarioSuscripciones"/>
+
+      <xs:complexType name="notificarUsuarioSuscripciones">
+        <xs:sequence>
+          <xs:element minOccurs="0" ref="tns:notificacionUsuarioSuscripcionesDTO"/>
+        </xs:sequence>
+      </xs:complexType>
+
+      <xs:complexType name="notificacion-usuario-suscripciones">
+        <xs:sequence>
+          <xs:element name="id-cliente" type="xs:string"/>
+          <xs:element name="fecha-hora-actual" type="xs:dateTime"/>
+          <xs:element name="codigo-respuesta" type="xs:string"/>
+          <xs:element name="mensaje" type="xs:string"/>
+          <xs:element minOccurs="0" name="usuario-suscripciones">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="usuario-suscripcion" type="tns:notificacion-usuario-suscripcion"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="codigo-comercio" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+
+      <xs:complexType name="notificacion-usuario-suscripcion">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="datos-de-suscripcion">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="dato-de-suscripcion" type="tns:datos-suscripcion"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element name="codigo-medio-de-pago" type="xs:string"/>
+          <xs:element name="alias-medio-de-pago" type="xs:string"/>
+          <xs:element name="token" type="xs:string"/>
+          <xs:element name="alias-usuario" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+
+      <xs:complexType name="datos-suscripcion">
+        <xs:sequence>
+          <xs:element name="clave" type="xs:string"/>
+          <xs:element name="valor" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+
+      <xs:complexType name="notificarSuscripcion">
+        <xs:sequence>
+          <xs:element minOccurs="0" ref="tns:notificacionSuscripcionDTO"/>
+        </xs:sequence>
+      </xs:complexType>
+
+      <xs:complexType name="notificacion-suscripcion">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="datos-de-suscripcion">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="dato-de-suscripcion" type="tns:datos-suscripcion"/>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+          <xs:element minOccurs="0" name="alias-medio-de-pago" type="xs:string"/>
+          <xs:element name="codigo-medio-de-pago" type="xs:string"/>
+          <xs:element name="codigo-respuesta" type="xs:string"/>
+          <xs:element name="mensaje" type="xs:string"/>
+          <xs:element name="codigo-comercio" type="xs:string"/>
+          <xs:element minOccurs="0" name="token" type="xs:string"/>
+          <xs:element minOccurs="0" name="alias-usuario" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="notificarSuscripcion">
+    <wsdl:part element="tns:notificarSuscripcion" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="notificarUsuarioSuscripciones">
+    <wsdl:part element="tns:notificarUsuarioSuscripciones" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="Request">
+    <wsdl:operation name="notificarUsuarioSuscripciones">
+      <wsdl:input message="tns:notificarUsuarioSuscripciones" name="notificarUsuarioSuscripciones">
+      </wsdl:input>
+    </wsdl:operation>
+    <wsdl:operation name="notificarSuscripcion">
+      <wsdl:input message="tns:notificarSuscripcion" name="notificarSuscripcion">
+      </wsdl:input>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="NotificacionSuscripcionServiceFinalServiceSoapBinding" type="tns:Request">
+    <soap12:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="notificarUsuarioSuscripciones">
+      <soap12:operation soapAction="urn:antel:mdm:system:epagos:notificarUsuarioSuscripciones" style="document"/>
+      <wsdl:input name="notificarUsuarioSuscripciones">
+        <soap12:body use="literal"/>
+      </wsdl:input>
+    </wsdl:operation>
+    <wsdl:operation name="notificarSuscripcion">
+      <soap12:operation soapAction="urn:antel:mdm:system:epagos:notificarSuscripcion" style="document"/>
+      <wsdl:input name="notificarSuscripcion">
+        <soap12:body use="literal"/>
+      </wsdl:input>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="NotificacionSuscripcionServiceFinalService">
+    <wsdl:port binding="tns:NotificacionSuscripcionServiceFinalServiceSoapBinding" name="NotificacionSuscripcionPort">
+      <soap12:address location="https://antel.com.uy/endpoint/"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

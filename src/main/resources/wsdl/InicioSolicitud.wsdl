@@ -1,0 +1,195 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.antel.com.uy/servicio/epagos/inicio-solicitud-v6.0"
+                  xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="InicioSolicitudServiceFinalService"
+                  targetNamespace="http://www.antel.com.uy/servicio/epagos/inicio-solicitud-v6.0">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.antel.com.uy/servicio/epagos/inicio-solicitud-v6.0" xmlns:ns1="http://www.antel.com.uy/servicio/epagos/comunes-v6.0" elementFormDefault="qualified" targetNamespace="http://www.antel.com.uy/servicio/epagos/inicio-solicitud-v6.0" version="1.0">
+
+  <xs:import namespace="http://www.antel.com.uy/servicio/epagos/comunes-v6.0"/>
+
+  <xs:element name="iniciarSolicitud" type="tns:iniciarSolicitud"/>
+
+  <xs:element name="solicitudDTO" type="tns:solicitudDTO"/>
+
+  <xs:complexType name="iniciarSolicitud">
+    <xs:sequence>
+      <xs:element minOccurs="0" ref="tns:solicitudDTO"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="solicitudDTO">
+    <xs:sequence>
+      <xs:element name="id-externo" type="xs:string"/>
+      <xs:element name="codigo-comercio" type="xs:string"/>
+      <xs:element name="consumidor-final" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="numero-factura" type="xs:string"/>
+      <xs:element name="fecha-hora-vencimiento" type="xs:dateTime"/>
+      <xs:element name="codigo-moneda" type="xs:string"/>
+      <xs:element minOccurs="0" name="solicitar-pagos-recurrentes" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="referencia-de-cobro" type="xs:string"/>
+      <xs:element minOccurs="0" name="token-suscripcion" type="xs:string"/>
+      <xs:element minOccurs="0" name="productos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" name="producto" type="tns:solicitud-oferta-producto"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="detalle-items" type="tns:solicitud-detalle-item"/>
+      <xs:element name="confirmar-offline" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="medios-de-pago">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="medio-de-pago" type="tns:solicitud-medio-de-pago"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="atributos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="atributo" type="ns1:atributo"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="solicitud-oferta-producto">
+    <xs:sequence>
+      <xs:element name="codigo" type="xs:string"/>
+      <xs:element minOccurs="0" name="atributos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="atributo" type="ns1:atributo"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="conceptos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" name="concepto" type="tns:solicitud-concepto"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="solicitud-concepto">
+    <xs:sequence>
+      <xs:element name="codigo" type="xs:string"/>
+      <xs:element minOccurs="0" name="atributos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="atributo" type="ns1:atributo"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="importes-tasas">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" name="importe-tasa" type="tns:solicitud-importe-tasa"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="solicitud-importe-tasa">
+    <xs:sequence>
+      <xs:element name="codigo-tasa" type="xs:string"/>
+      <xs:element name="importe" type="xs:decimal"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="solicitud-detalle-item">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="items">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="1" name="item" type="tns:solicitud-item"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="solicitud-item">
+    <xs:sequence>
+      <xs:element name="codigo" type="xs:string"/>
+      <xs:element name="descripcion" type="xs:string"/>
+      <xs:element name="cantidad" type="xs:decimal"/>
+      <xs:element name="importe-gravado" type="xs:decimal"/>
+      <xs:element name="porcentaje-tasa" type="xs:decimal"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="solicitud-medio-de-pago">
+    <xs:sequence>
+      <xs:element name="codigo-medio-de-pago" type="xs:string"/>
+      <xs:element name="codigo-forma-de-pago" type="xs:string"/>
+      <xs:element name="cuotas" type="xs:int"/>
+      <xs:element minOccurs="0" name="importes-tasas">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" name="importe-tasa" type="tns:solicitud-importe-tasa"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.antel.com.uy/servicio/epagos/comunes-v6.0" elementFormDefault="qualified" targetNamespace="http://www.antel.com.uy/servicio/epagos/comunes-v6.0" version="1.0">
+
+  <xs:complexType name="atributo">
+    <xs:sequence>
+      <xs:element name="nombre" type="xs:string"/>
+      <xs:element name="valor" type="xs:string"/>
+      <xs:element name="tipo" type="tns:tipo-atributo"/>
+      <xs:element minOccurs="0" name="atributos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="atributo" type="tns:atributo"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="tipo-atributo">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="TIPO_ENTERO"/>
+      <xs:enumeration value="TIPO_DECIMAL"/>
+      <xs:enumeration value="TIPO_FECHA"/>
+      <xs:enumeration value="TIPO_BOOLEANO"/>
+      <xs:enumeration value="TIPO_TEXTO"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="iniciarSolicitud">
+    <wsdl:part element="tns:iniciarSolicitud" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="Request">
+    <wsdl:operation name="iniciarSolicitud">
+      <wsdl:input message="tns:iniciarSolicitud" name="iniciarSolicitud">
+    </wsdl:input>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="InicioSolicitudServiceFinalServiceSoapBinding" type="tns:Request">
+    <soap12:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="iniciarSolicitud">
+      <soap12:operation soapAction="urn:antel:mdm:system:epagos:b2b:comercio:iniciarSolicitud" style="document"/>
+      <wsdl:input name="iniciarSolicitud">
+        <soap12:body use="literal"/>
+      </wsdl:input>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="InicioSolicitudServiceFinalService">
+    <wsdl:port binding="tns:InicioSolicitudServiceFinalServiceSoapBinding" name="InicioSolicitudPort">
+      <soap12:address location="https://antel.com.uy/endpoint/"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

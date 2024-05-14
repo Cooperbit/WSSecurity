@@ -1,0 +1,207 @@
+<?xml version='1.0' encoding='UTF-8'?><wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.antel.com.uy/servicio/epagos/notificacion-transaccion-v6.0" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+                                                        xmlns:ns1="http://ws.comercio.epagos.antel.com.uy/" name="NotificacionServiceFinalService" targetNamespace="http://www.antel.com.uy/servicio/epagos/notificacion-transaccion-v6.0">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.antel.com.uy/servicio/epagos/notificacion-transaccion-v6.0" xmlns:ns1="http://www.antel.com.uy/servicio/epagos/comunes-v6.0" elementFormDefault="qualified" targetNamespace="http://www.antel.com.uy/servicio/epagos/notificacion-transaccion-v6.0" version="1.0">
+
+  <xs:import namespace="http://www.antel.com.uy/servicio/epagos/comunes-v6.0"/>
+
+  <xs:element name="notificacionTransaccionDTO" type="tns:notificacion-transaccion"/>
+
+  <xs:complexType name="notificacion-transaccion">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="codigo-autorizacion" type="xs:string"/>
+      <xs:element name="id-externo" type="xs:string"/>
+      <xs:element name="codigo-comercio" type="xs:string"/>
+      <xs:element minOccurs="0" name="estado-transaccion" type="tns:estado-transaccion"/>
+      <xs:element name="tipo-notificacion" type="tns:tipoNotificacion"/>
+      <xs:element name="codigo-respuesta" type="xs:string"/>
+      <xs:element name="mensaje" type="xs:string"/>
+      <xs:element minOccurs="0" name="canal-de-pago" type="xs:string"/>
+      <xs:element minOccurs="0" name="codigo-moneda" type="xs:string"/>
+      <xs:element minOccurs="0" name="referencia-de-cobro" type="xs:string"/>
+      <xs:element name="fecha-hora-actual" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="codigo-autorizacion-mp" type="xs:string"/>
+      <xs:element minOccurs="0" name="productos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="producto" type="tns:notificacion-oferta-producto"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="medios-de-pago">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="medio-de-pago" type="tns:notificacion-medio-de-pago"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="atributos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="atributo" type="ns1:atributo"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="codigo-barras-b64" type="xs:string"/>
+      <xs:element minOccurs="0" name="valor-cotizacion" type="xs:decimal"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="notificacion-oferta-producto">
+    <xs:sequence>
+      <xs:element name="codigo-oferta" type="xs:string"/>
+      <xs:element minOccurs="0" name="atributos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="atributo" type="ns1:atributo"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="conceptos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="concepto" type="tns:notificacion-concepto"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="notificacion-concepto">
+    <xs:sequence>
+      <xs:element name="codigo" type="xs:string"/>
+      <xs:element default="false" name="asume-el-cliente" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="atributos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="atributo" type="ns1:atributo"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="importes-tasas">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" name="importe-tasa" type="tns:notificacion-importe-tasa"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="notificacion-importe-tasa">
+    <xs:sequence>
+      <xs:element name="codigo-tasa" type="xs:string"/>
+      <xs:element name="importe" type="xs:decimal"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="notificacion-medio-de-pago">
+    <xs:sequence>
+      <xs:element name="codigo-medio-de-pago" type="xs:string"/>
+      <xs:element name="codigo-forma-de-pago" type="xs:string"/>
+      <xs:element name="codigo-procesador" type="xs:string"/>
+      <xs:element minOccurs="0" name="descuento" type="xs:decimal"/>
+      <xs:element name="cuotas" type="xs:int"/>
+      <xs:element name="fecha-hora-confirmacion-medio-de-pago" type="xs:dateTime"/>
+      <xs:element name="estado" type="tns:estado-transaccion"/>
+      <xs:element minOccurs="0" name="importes-tasas">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="importe-tasa" type="tns:notificacion-importe-tasa"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="estado-transaccion">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="EN_PROCESO"/>
+      <xs:enumeration value="AUTORIZADA"/>
+      <xs:enumeration value="RECHAZADA"/>
+      <xs:enumeration value="CANCELADA"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="tipoNotificacion">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="OK"/>
+      <xs:enumeration value="RECHAZO"/>
+      <xs:enumeration value="ERROR"/>
+      <xs:enumeration value="PENDIENTE_PAGO"/>
+      <xs:enumeration value="INFO"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.antel.com.uy/servicio/epagos/comunes-v6.0" elementFormDefault="qualified" targetNamespace="http://www.antel.com.uy/servicio/epagos/comunes-v6.0" version="1.0">
+
+  <xs:complexType name="atributo">
+    <xs:sequence>
+      <xs:element name="nombre" type="xs:string"/>
+      <xs:element name="valor" type="xs:string"/>
+      <xs:element name="tipo" type="tns:tipo-atributo"/>
+      <xs:element minOccurs="0" name="atributos">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element maxOccurs="unbounded" minOccurs="0" name="atributo" type="tns:atributo"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="tipo-atributo">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="TIPO_ENTERO"/>
+      <xs:enumeration value="TIPO_DECIMAL"/>
+      <xs:enumeration value="TIPO_FECHA"/>
+      <xs:enumeration value="TIPO_BOOLEANO"/>
+      <xs:enumeration value="TIPO_TEXTO"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+</xs:schema>
+    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://ws.comercio.epagos.antel.com.uy/"
+               xmlns:ns1="http://www.antel.com.uy/servicio/epagos/notificacion-transaccion-v6.0" elementFormDefault="qualified"
+               targetNamespace="http://ws.comercio.epagos.antel.com.uy/" version="1.0">
+
+  <xs:import namespace="http://www.antel.com.uy/servicio/epagos/notificacion-transaccion-v6.0"/>
+
+  <xs:import namespace="http://www.antel.com.uy/servicio/epagos/comunes-v6.0"/>
+
+  <xs:element name="notificarTransaccion" type="tns:notificarTransaccion"/>
+
+  <xs:complexType name="notificarTransaccion">
+    <xs:sequence>
+      <xs:element minOccurs="0" ref="ns1:notificacionTransaccionDTO"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="notificarTransaccion">
+    <wsdl:part element="ns1:notificarTransaccion" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="ConfirmacionComercio">
+    <wsdl:operation name="notificarTransaccion">
+      <wsdl:input message="tns:notificarTransaccion" name="notificarTransaccion">
+    </wsdl:input>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="NotificacionServiceFinalServiceSoapBinding" type="tns:ConfirmacionComercio">
+    <soap12:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="notificarTransaccion">
+      <soap12:operation soapAction="urn:antel:mdm:system:epagos:notificarTransaccion" style="document"/>
+      <wsdl:input name="notificarTransaccion">
+        <soap12:body use="literal"/>
+      </wsdl:input>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="NotificacionServiceFinalService">
+    <wsdl:port binding="tns:NotificacionServiceFinalServiceSoapBinding" name="ConfirmacionComercioPort">
+      <soap12:address location="https://antel.com.uy/endpoint/"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
