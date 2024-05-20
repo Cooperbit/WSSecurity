@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.antel.com.uy/servicio/epagos/suscripciones-v6.0"
+                  xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+                  name="BajaSuscripcionServiceFinalService" targetNamespace="http://www.antel.com.uy/servicio/epagos/suscripciones-v6.0">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.antel.com.uy/servicio/epagos/suscripciones-v6.0" elementFormDefault="qualified" targetNamespace="http://www.antel.com.uy/servicio/epagos/suscripciones-v6.0" version="1.0">
+
+  <xs:element name="bajaSuscripcionDTO" type="tns:bajaSuscripcionDTO"/>
+
+  <xs:element name="bajarSuscripcion" type="tns:bajarSuscripcion"/>
+
+  <xs:complexType name="bajarSuscripcion">
+    <xs:sequence>
+      <xs:element minOccurs="0" ref="tns:bajaSuscripcionDTO"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="bajaSuscripcionDTO">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="token-suscripcion" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="bajarSuscripcion">
+    <wsdl:part element="tns:bajarSuscripcion" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="Request">
+    <wsdl:operation name="bajarSuscripcion">
+      <wsdl:input message="tns:bajarSuscripcion" name="bajarSuscripcion">
+    </wsdl:input>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BajaSuscripcionServiceFinalServiceSoapBinding" type="tns:Request">
+    <soap12:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="bajarSuscripcion">
+      <soap12:operation soapAction="urn:antel:mdm:system:epagos:b2b:comercio:bajarSuscripcion" style="document"/>
+      <wsdl:input name="bajarSuscripcion">
+        <soap12:body use="literal"/>
+      </wsdl:input>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="BajaSuscripcionServiceFinalService">
+    <wsdl:port binding="tns:BajaSuscripcionServiceFinalServiceSoapBinding" name="BajaSuscripcionPort">
+      <soap12:address location="https://antel.com.uy/endpoint/"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

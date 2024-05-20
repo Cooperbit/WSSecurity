@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://www.antel.com.uy/servicio/epagos/cancelacion-transaccion-v6.0"
+                  xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+                  name="CancelarTransaccionServiceFinalService" targetNamespace="http://www.antel.com.uy/servicio/epagos/cancelacion-transaccion-v6.0">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.antel.com.uy/servicio/epagos/cancelacion-transaccion-v6.0" elementFormDefault="qualified" targetNamespace="http://www.antel.com.uy/servicio/epagos/cancelacion-transaccion-v6.0" version="1.0">
+
+  <xs:element name="cancelacionDTO" type="tns:cancelacionDTO"/>
+
+  <xs:element name="cancelarTransaccion" type="tns:cancelarTransaccion"/>
+
+  <xs:complexType name="cancelarTransaccion">
+    <xs:sequence>
+      <xs:element minOccurs="0" ref="tns:cancelacionDTO"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="cancelacionDTO">
+    <xs:sequence>
+      <xs:element name="id-externo" type="xs:string"/>
+      <xs:element name="codigo-comercio" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="cancelarTransaccion">
+    <wsdl:part element="tns:cancelarTransaccion" name="parameters">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="Request">
+    <wsdl:operation name="cancelarTransaccion">
+      <wsdl:input message="tns:cancelarTransaccion" name="cancelarTransaccion">
+    </wsdl:input>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CancelarTransaccionServiceFinalServiceSoapBinding" type="tns:Request">
+    <soap12:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="cancelarTransaccion">
+      <soap12:operation soapAction="urn:antel:mdm:system:epagos:b2b:comercio:cancelarTransaccion" style="document"/>
+      <wsdl:input name="cancelarTransaccion">
+        <soap12:body use="literal"/>
+      </wsdl:input>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CancelarTransaccionServiceFinalService">
+    <wsdl:port binding="tns:CancelarTransaccionServiceFinalServiceSoapBinding" name="CancelarTransaccionPort">
+      <soap12:address location="https://antel.com.uy/endpoint/"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
