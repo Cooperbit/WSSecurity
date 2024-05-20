@@ -18,6 +18,7 @@ import org.apache.cxf.configuration.security.KeyStoreType;
 import org.apache.cxf.configuration.security.TrustManagersType;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.endpoint.Endpoint;
+import org.apache.cxf.ext.logging.LoggingFeature;
 import org.apache.cxf.ext.logging.LoggingInInterceptor;
 import org.apache.cxf.ext.logging.LoggingOutInterceptor;
 import org.apache.cxf.frontend.ClientProxy;
@@ -27,6 +28,7 @@ import org.apache.cxf.ws.addressing.AttributedURIType;
 import org.apache.cxf.ws.addressing.EndpointReferenceType;
 import org.apache.cxf.ws.addressing.JAXWSAConstants;
 import org.apache.cxf.ws.addressing.WSAddressingFeature;
+import org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor;
 import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor;
 import org.apache.wss4j.dom.handler.WSHandlerConstants;
 import uy.com.antel.servicio.epagos.inicio_solicitud_v6.IniciarSolicitud;
@@ -79,21 +81,34 @@ public class WSSecurity {
         outProps.put(WSHandlerConstants.ACTION, WSHandlerConstants.ENCRYPT + " " + WSHandlerConstants.SIGNATURE);
         
         outProps.put(WSHandlerConstants.ENCRYPTION_USER, "antelepagos_testing_server");
+        //outProps.put(WSHandlerConstants.ENCRYPTION_PARTS, "{Content}{http://www.w3.org/2003/05/soap-envelope}Body;");
+        outProps.put(WSHandlerConstants.ENC_KEY_ID, "DirectReference");
         File antelProperties = new File("src/main/resources/properties/antel.properties");
         outProps.put(WSHandlerConstants.ENC_PROP_FILE, antelProperties.getPath());
         
         File quarxsProperties = new File("src/main/resources/properties/quarxs.properties");
         outProps.put(WSHandlerConstants.SIGNATURE_USER, "antelepagos_testing");
+        //outProps.put(WSHandlerConstants.SIGNATURE_PARTS, "{Content}{http://www.w3.org/2003/05/soap-envelope}Envelope");
+        outProps.put(WSHandlerConstants.SIG_KEY_ID, "DirectReference");
         outProps.put(WSHandlerConstants.PW_CALLBACK_CLASS, QuarxsPWCallbackHandler.class.getName());
         outProps.put(WSHandlerConstants.SIG_PROP_FILE, quarxsProperties.getPath());
         
+        Map<String, Object> inProps = new HashMap<>();
+        inProps.put(WSHandlerConstants.ACTION, "Signature");
+        
+        inProps.put(WSHandlerConstants.SIGNATURE_USER, "antelepagos_testing_server");
+        inProps.put(WSHandlerConstants.SIG_KEY_ID, "DirectReference");
+        inProps.put(WSHandlerConstants.SIG_PROP_FILE, antelProperties.getPath());
+        
         WSS4JOutInterceptor wssOut = new WSS4JOutInterceptor(outProps);
+        WSS4JInInterceptor wssIn = new WSS4JInInterceptor(inProps);
+        endpoint.getInInterceptors().add(wssIn);
         endpoint.getOutInterceptors().add(wssOut);
         
         client.getInInterceptors().add(new LoggingInInterceptor());
-        client.getInFaultInterceptors().add(new LoggingInInterceptor());
-        client.getOutInterceptors().add(new LoggingOutInterceptor());
-        client.getOutFaultInterceptors().add(new LoggingOutInterceptor());
+        LoggingOutInterceptor loggingOutInterceptor = new LoggingOutInterceptor();
+        loggingOutInterceptor.setPrettyLogging(true);
+        client.getOutInterceptors().add(loggingOutInterceptor);
         
         IniciarSolicitud iniciarSolicitud = new IniciarSolicitud();
         SolicitudDTO solicitudDTO = new SolicitudDTO();
@@ -126,6 +141,10 @@ public class WSSecurity {
         solicitudDetalleItem.setItems(items);
         solicitudDTO.setDetalleItems(solicitudDetalleItem);
         
+        iniciarSolicitud.setSolicitudDTO(solicitudDTO);
         inicioSolicitudRequest.iniciarSolicitud(iniciarSolicitud);
+        String inPayload = (String)client.getResponseContext().get(LoggingInPayloadInterceptor.IN_PAYLOAD_KEY);
+        String outPayload = (String) client.getResponseContext().get(LoggingOutPayloadInterceptor.OUT_PAYLOAD_KEY);
+        System.out.println(inPayload);
     }
 }
